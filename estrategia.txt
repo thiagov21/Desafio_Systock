@@ -1,0 +1,56 @@
+1. Estrutura do Projeto
+
+A solução está organizada em três principais componentes:
+
+Schemas (Estrutura de Dados)
+
+O arquivo schemas/01_create_tables.sql cria as três tabelas principais:
+venda: Registra todas as vendas realizadas
+pedido_compra: Controla os pedidos de compra
+entradas_mercadoria: Registra o recebimento de mercadorias
+Foram adicionados índices para otimizar a performance das consultas
+Consultas (Parte 1 e 2)
+
+1.1 Consumo Mensal (1.1_consumo_mensal.sql)
+
+Mostra o consumo total por produto em fevereiro/2025
+Útil para análise de demanda e planejamento de estoque
+Exemplo de apresentação: "Aqui podemos ver os produtos mais vendidos do mês, permitindo otimizar o estoque"
+1.2 Pedidos Pendentes (1.2_pedidos_pendentes.sql)
+
+Lista produtos com entregas pendentes
+Ajuda a identificar possíveis problemas no fornecimento
+Apresentação: "Esta consulta nos mostra onde precisamos dar atenção especial ao follow-up com fornecedores"
+1.3 Produtos Não Consumidos (1.3_nao_consumidos.sql)
+
+Identifica produtos pedidos mas sem movimento
+Importante para evitar estoque parado
+Apresentação: "Aqui identifiquei produtos que podem precisar de atenção especial na gestão de estoque"
+Transformações de Dados (transformacoes.sql)
+
+Foca em produtos com alta frequência de pedidos
+Formata dados para melhor visualização
+Apresentação: "Esta visão nos permite acompanhar os produtos mais requisitados e seu histórico de pedidos"
+Validação com Cliente
+
+A estratégia de validação (docs/estrategia_validacao.md) inclui:
+
+Integridade dos Dados
+
+Verificação de pedidos x entradas
+Conferência de quantidades pendentes
+Apresentação: "Garantimos que todos os números estão corretos e consistentes"
+Consultas de Validação (validacao_cliente.sql)
+
+Totais diários de vendas
+Tempo médio de entrega
+Divergências entre pedido e recebimento
+Análise de tendências
+Pontos de Destaque para o Cliente:
+
+Performance otimizada com índices
+Facilidade de identificar problemas
+Visões consolidadas para tomada de decisão
+Sistema de validação robusto
+Flexibilidade para ajustes conforme necessidade
+Esta solução fornece uma base sólida para o controle de estoque e pode ser expandida conforme as necessidades específicas do cliente.

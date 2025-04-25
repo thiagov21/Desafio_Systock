@@ -1,0 +1,92 @@
+// Sistema de Gestão de Estoque e Vendas
+Project SistemaGestao {
+  database_type: 'PostgreSQL'
+  Note: '''
+    # Sistema de Gestão de Estoque e Vendas
+
+    ## Fluxos Principais
+    1. Gestão de Compras
+       - Pedidos de compra
+       - Recebimento de mercadorias
+    
+    2. Gestão de Vendas
+       - Registro de vendas
+       - Análise de consumo
+    
+    3. Análises
+       - Consumo mensal
+       - Pedidos pendentes
+       - Produtos não movimentados
+  '''
+}
+
+Table venda {
+  venda_id int8 [pk]
+  data_emissao date [pk]
+  horariomov varchar(8) [pk, default: '00:00:00']
+  produto_id varchar(25) [pk, default: '']
+  qtde_vendida float8
+  valor_unitario numeric(12,4) [default: 0]
+  filial_id int8 [pk, default: 1]
+  item int4 [pk, default: 0]
+  unidade_medida varchar(3)
+
+  indexes {
+    (filial_id, venda_id, data_emissao, produto_id, item, horariomov) [pk]
+    data_emissao [name: 'idx_venda_data']
+  }
+
+  Note: 'Registro de todas as vendas realizadas no sistema'
+}
+
+Table pedido_compra {
+  pedido_id float8 [pk, default: 0]
+  data_pedido date
+  item float8 [pk, default: 0]
+  produto_id varchar(25) [pk, default: '0']
+  descricao_produto varchar(255)
+  ordem_compra float8 [default: 0]
+  qtde_pedida float8
+  filial_id int4
+  data_entrega date
+  qtde_entregue float8 [default: 0]
+  qtde_pendente float8 [default: 0]
+  preco_compra float8 [default: 0]
+  fornecedor_id int4 [default: 0]
+
+  indexes {
+    (pedido_id, produto_id, item) [pk]
+    data_pedido [name: 'idx_pedido_data']
+  }
+
+  Note: 'Controle dos pedidos de compra'
+}
+
+Table entradas_mercadoria {
+  data_entrada date
+  nro_nfe varchar(255) [pk]
+  item float8 [pk, default: 0]
+  produto_id varchar(25) [pk, default: '0']
+  descricao_produto varchar(255)
+  qtde_recebida float8
+  filial_id int4
+  custo_unitario numeric(12,4) [default: 0]
+  ordem_compra float8 [pk, default: 0]
+
+  indexes {
+    (ordem_compra, item, produto_id, nro_nfe) [pk]
+    data_entrada [name: 'idx_entrada_data']
+  }
+
+  Note: 'Registro das entradas de mercadoria'
+}
+
+// Grupos de Análise
+TableGroup Análises {
+  venda
+  pedido_compra
+  entradas_mercadoria
+}
+
+// Relacionamentos
+Ref: entradas_mercadoria.ordem_compra > pedido_compra.ordem_compra
